@@ -10,5 +10,7 @@ public interface UserService {
 
     void removeUserById(long id);
 
+    User showById(long id);
+
     List<User> getAllUsers();
 }

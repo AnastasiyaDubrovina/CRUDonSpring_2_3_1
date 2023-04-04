@@ -1,6 +1,7 @@
 package web.dao;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import web.model.User;
 
 import javax.persistence.EntityManager;
@@ -9,8 +10,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
-@Transactional
+@Repository
 public class UserDaoImpl implements UserDao {
     //в приложении должна быть страница, на которую выводятся все юзеры с возможностью добавлять, удалять и изменять юзера.
     @PersistenceContext
@@ -29,6 +29,15 @@ public class UserDaoImpl implements UserDao {
 //    }
 
     @Override
+    public User showById(long id) { /////////////????????????????????
+//        TypedQuery <User> query = entityManager.createQuery("select u from User u where u.id = id", User.class);
+//        query.setParameter("id", id);
+        // добавить findAny().orElse(null)
+        return entityManager.find(User.class, id);
+
+    }
+
+    @Override
     public void removeUserById(long id) { /////////////????????????????????
 //        TypedQuery <User> query = entityManager.createQuery("select u from User u where u.id = id", User.class);
 //        query.setParameter("id", id);
@@ -37,7 +46,9 @@ public class UserDaoImpl implements UserDao {
 
     }
 
+
     @Override
+    @SuppressWarnings("unchecked")
     public List<User> getAllUsers() {
         return entityManager.createQuery(
                 "select u from User u", User.class).getResultList();
