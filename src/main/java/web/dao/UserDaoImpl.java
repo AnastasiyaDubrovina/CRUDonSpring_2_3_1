@@ -1,47 +1,39 @@
 package web.dao;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import web.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-    //в приложении должна быть страница, на которую выводятся все юзеры с возможностью добавлять, удалять и изменять юзера.
     @PersistenceContext
     private EntityManager entityManager;
 
 
     @Override
     public void saveUser(User user) {
-//        User user = new User(name, age);
         entityManager.persist(user);
     }
 
-//    @Override
-//    public void updateUserById(long id) {
-//
-//    }
+    @Override
+    public void updateUserById(long id, User user) {
+        User userToBeUpdated = showById(id);
+        userToBeUpdated.setName(user.getName());
+        userToBeUpdated.setAge(user.getAge());
+        entityManager.merge(userToBeUpdated);
+    }
 
     @Override
-    public User showById(long id) { /////////////????????????????????
-//        TypedQuery <User> query = entityManager.createQuery("select u from User u where u.id = id", User.class);
-//        query.setParameter("id", id);
-        // добавить findAny().orElse(null)
+    public User showById(long id) {
         return entityManager.find(User.class, id);
 
     }
 
     @Override
-    public void removeUserById(long id) { /////////////????????????????????
-//        TypedQuery <User> query = entityManager.createQuery("select u from User u where u.id = id", User.class);
-//        query.setParameter("id", id);
-        // добавить findAny().orElse(null)
+    public void removeUserById(long id) {
         entityManager.remove(entityManager.find(User.class, id));
 
     }

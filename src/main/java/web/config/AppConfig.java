@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -75,9 +74,5 @@ public class AppConfig {
          return transactionManager;
       }
 
-//      @Bean
-//      public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
-//         return new PersistenceExceptionTranslationPostProcessor();
-//      }
 
 }

@@ -9,8 +9,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-
-
 public class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
@@ -23,6 +21,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeUserById(long id) {
         userDao.removeUserById(id);
+    }
+
+    @Transactional
+    @Override
+    public void updateUserById(long id, User user) {
+        userDao.updateUserById(id, user);
     }
 
     @Transactional

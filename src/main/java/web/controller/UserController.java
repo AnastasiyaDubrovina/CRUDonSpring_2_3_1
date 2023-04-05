@@ -2,27 +2,15 @@ package web.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
-//@RequestMapping("/")
 public class UserController {
-//   @Autowired
-//    @Qualifier
 private UserService userService;
-    /////////////////////////////////////////
-    //3. В приложении должна быть страница, на которую выводятся все юзеры с возможностью добавлять, удалять и изменять юзера.
-    /////////////////////////////////////////
 
     @Autowired
     public UserController(UserService userService) {
@@ -32,16 +20,42 @@ private UserService userService;
     @GetMapping("/users")
     public String allUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
-        //добавить на страницу ссылку для добавления нового юзера
-        //имя юзера сделать в виде ссылки для перехода на его страницу для изменения или удаления
         return "users";
     }
 
     @GetMapping("/users/{id}")
     public String showUser(@PathVariable("id") long id, Model model) {
-        //просмотр страницы юзера, добавить ссылку для изменениея и удаления юзера
         model.addAttribute("user", userService.showById(id));
         return "show";
+    }
+
+    @GetMapping("/users/new")
+    public String newUser(@ModelAttribute("user") User user) {
+        return "new";
+    }
+
+    @PostMapping("/users")
+    public String create(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users/{id}/edit")
+    public String edit(Model model, @PathVariable("id") long id) {
+        model.addAttribute("user", userService.showById(id));
+        return "edit";
+    }
+
+    @PatchMapping("/users/{id}")
+    public String update(@ModelAttribute("user") User user, @PathVariable("id") long id) {
+        userService.updateUserById(id, user);
+        return "redirect:/users";
+    }
+
+    @DeleteMapping("/users/{id}")
+    public String delete(@PathVariable("id") long id) {
+        userService.removeUserById(id);
+        return "redirect:/users";
     }
 
 
